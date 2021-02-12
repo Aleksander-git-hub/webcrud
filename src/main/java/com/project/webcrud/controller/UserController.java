@@ -60,8 +60,8 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/user/{userId}/book/{bookId}")
-    public PlainUserDto removeBookFromUser(@PathVariable(value = "userId") Long userId,
+    public UserDto removeBookFromUser(@PathVariable(value = "userId") Long userId,
                                  @PathVariable(value = "bookId") Long bookId) {
-        return plainUserMapper.toPlainDto(userService.removeBookFromUser(userId, bookId));
+        return userMapper.toDto(userService.removeBookFromUser(userId, bookId));
     }
 }
