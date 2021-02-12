@@ -3,6 +3,7 @@ package com.project.webcrud.service;
 import com.project.webcrud.dto.UserDto;
 import com.project.webcrud.entity.BookEntity;
 import com.project.webcrud.entity.UserEntity;
+import com.project.webcrud.exceptions.AlreadyAssignedException;
 import com.project.webcrud.exceptions.NotFoundException;
 import com.project.webcrud.mapper.UserMapper;
 import com.project.webcrud.repository.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -74,6 +76,9 @@ public class UserService {
         UserEntity existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
         BookEntity bookEntity = bookService.getBookById(bookId);
+        if(Objects.nonNull(bookEntity.getUser())){
+            throw new AlreadyAssignedException("Already assigned");
+        }
         existingUser.getBooks().add(bookEntity);
         bookEntity.setUser(existingUser);
         return existingUser;
