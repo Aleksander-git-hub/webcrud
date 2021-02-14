@@ -1,6 +1,5 @@
 package com.project.webcrud.entity;
 
-import com.project.webcrud.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -21,9 +21,6 @@ public class BookController {
     @Autowired
     private BookMapper bookMapper;
 
-    /*@Autowired
-    private PlainBookMapper plainBookMapper;*/
-
     @PostMapping(value = "/book")
     public BookDto saveBook(@RequestBody BookDto bookDto) {
         return bookMapper.toDto(bookService.saveBook(bookDto));

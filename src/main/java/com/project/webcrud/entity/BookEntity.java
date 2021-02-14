@@ -1,6 +1,5 @@
 package com.project.webcrud.entity;
 
-import com.project.webcrud.dto.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,9 +25,4 @@ public class BookEntity {
 
     @ManyToOne
     private UserEntity user;
-
-    /*public static BookEntity toEntity(BookDto bookDto) {
-        BookEntity bookEntity = new BookEntity();
-        bookEntity
-    }*/
 }

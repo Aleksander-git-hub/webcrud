@@ -24,5 +24,4 @@ public class UserDto {
     private Boolean deleted;
 
     private List<PlainBookDto> books;
-    //private List<BookDto> books;
 }
