@@ -90,6 +90,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
         BookEntity bookEntity = bookService.getBookById(bookId);
         existingUser.getBooks().remove(bookEntity);
+        bookEntity.setUser(null);
         return existingUser;
     }
 }
