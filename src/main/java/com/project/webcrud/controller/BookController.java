@@ -27,7 +27,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/book/{bookId}")
-    public BookDto getBookById(@PathVariable(value = "bookId") Long bookId) {
+    public BookDto getBookById(@PathVariable Long bookId) {
         return bookMapper.toDto(bookService.getBookById(bookId));
     }
 
@@ -39,12 +39,13 @@ public class BookController {
 
     @PutMapping(value = "/book/{bookId}")
     public BookDto updateBookById(@RequestBody BookDto bookDto,
-                                  @PathVariable(value = "bookId") Long bookId) {
+                                  @PathVariable Long bookId) {
         return bookMapper.toDto(bookService.updateBookById(bookDto, bookId));
     }
 
     @DeleteMapping(value = "/book/{bookId}")
-    public ResponseEntity<?> deleteBookById(@PathVariable(value = "bookId") Long bookId) {
-        return bookService.deleteBookById(bookId);
+    public ResponseEntity<?> deleteBookById(@PathVariable Long bookId) {
+        bookService.deleteBookById(bookId);
+        return ResponseEntity.ok().build();
     }
 }

@@ -7,7 +7,6 @@ import com.project.webcrud.mapper.BookMapper;
 import com.project.webcrud.repository.BookRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,6 +30,7 @@ public class BookService {
         return bookRepository.save(bookMapper.toEntity(bookDto));
     }
 
+    @Transactional
     public BookEntity getBookById(Long bookId) {
         return bookRepository.findById(bookId)
                 .orElseThrow(() -> new NotFoundException("Book not found with id: " + bookId));
@@ -54,10 +54,10 @@ public class BookService {
         return existingBook;
     }
 
-    public ResponseEntity<?> deleteBookById(Long bookId) {
+    public void deleteBookById(Long bookId) {
         BookEntity existingBook = bookRepository.findById(bookId)
                 .orElseThrow(() -> new NotFoundException("Book not found with id: " + bookId));
         existingBook.setDeleted(true);
-        return ResponseEntity.ok().build();
+        bookRepository.save(existingBook);
     }
 }

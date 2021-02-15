@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/{userId}")
-    public UserDto getUserById(@PathVariable(value = "userId") Long userId) {
+    public UserDto getUserById(@PathVariable Long userId) {
         return userMapper.toDto(userService.getUserById(userId));
     }
 
@@ -44,24 +44,25 @@ public class UserController {
 
     @PutMapping(value = "/user/{userId}")
     public UserDto updateUserById(@RequestBody UserDto userDto,
-                                  @PathVariable(value = "userId") Long userId) {
+                                  @PathVariable Long userId) {
         return userMapper.toDto(userService.updateUserById(userDto, userId));
     }
 
     @DeleteMapping(value = "/user/{userId}")
-    public ResponseEntity<?> deleteUserById(@PathVariable(value = "userId") Long userId) {
-        return userService.deleteUserById(userId);
+    public ResponseEntity<?> deleteUserById(@PathVariable Long userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/user/{userId}/book/{bookId}")
-    public PlainUserDto addBookToUser(@PathVariable(value = "userId") Long userId,
-                                      @PathVariable(value = "bookId") Long bookId) {
+    public PlainUserDto addBookToUser(@PathVariable Long userId,
+                                      @PathVariable Long bookId) {
         return plainUserMapper.toPlainDto(userService.addBookToUser(userId, bookId));
     }
 
     @DeleteMapping(value = "/user/{userId}/book/{bookId}")
-    public UserDto removeBookFromUser(@PathVariable(value = "userId") Long userId,
-                                 @PathVariable(value = "bookId") Long bookId) {
+    public UserDto removeBookFromUser(@PathVariable Long userId,
+                                 @PathVariable Long bookId) {
         return userMapper.toDto(userService.removeBookFromUser(userId, bookId));
     }
 }

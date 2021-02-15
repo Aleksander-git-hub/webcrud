@@ -9,7 +9,6 @@ import com.project.webcrud.mapper.UserMapper;
 import com.project.webcrud.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,6 +36,7 @@ public class UserService {
         return userRepository.save(userMapper.toEntity(userDto));
     }
 
+    @Transactional
     public UserEntity getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
@@ -59,16 +59,16 @@ public class UserService {
             existingUser.setSecondName(userDto.getSecondName());
             existingUser.setEmail(userDto.getEmail());
             existingUser.setAge(userDto.getAge());
-            //existingUser.setBooks(userMapper.toEntity(userDto).getBooks());
+            existingUser.setBooks(userMapper.toEntity(userDto).getBooks());
         }
         return existingUser;
     }
 
-    public ResponseEntity<?> deleteUserById(Long userId) {
+    public void deleteUserById(Long userId) {
         UserEntity existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
         existingUser.setDeleted(true);
-        return ResponseEntity.ok().build();
+        userRepository.save(existingUser);
     }
 
     @Transactional
@@ -89,8 +89,12 @@ public class UserService {
         UserEntity existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
         BookEntity bookEntity = bookService.getBookById(bookId);
+        if (bookEntity.getDeleted()) {
+            throw new NotFoundException("Book was deleted for id: " + bookId);
+        }
         existingUser.getBooks().remove(bookEntity);
         bookEntity.setUser(null);
+        userRepository.save(existingUser);
         return existingUser;
     }
 }
